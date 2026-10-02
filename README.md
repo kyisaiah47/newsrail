@@ -1,14 +1,14 @@
 # NewsRail
 
-NewsRail is a news agent. It polls sources, filters what it finds, writes a post with your model, renders a card, publishes to the platforms you choose, and stores a record of every post. Each wire is one config file.
+NewsRail polls sources, filters items, writes posts with your model, renders cards, publishes to selected platforms, and stores every post. Each wire uses one config file.
 
 ## What makes it NewsRail
 
-**Hard filters come first, and the score never overrides them.** A wire declares its filters: maximum age, the sources on its beat, score and star floors, deny patterns and your own predicates. An item that fails one is dropped before anything ranks it. A story with ten thousand points from last week is still last week's story. The score only orders the items that passed.
+**Hard filters run before scoring.** A wire declares a maximum age, source allow-list, score floor, star floor, deny patterns, and custom predicates. NewsRail drops an item that fails any filter before ranking items. A story with ten thousand points from last week remains last week's story. The score orders only items that pass the filters.
 
-**The model's yes is checked by code.** One model call drafts a batch of posts. Each draft then goes through a code gate: the length limit for every platform, no links in the body, the hashtag rule, no emoji, no first-person claims, no repeat of a story the wire already covered, the lead must name the source's company or project, and optional noise and prose checks. A draft that fails any check is refused and the reason is logged.
+**Code checks every model draft.** One model call drafts a batch of posts. Each draft passes through checks for every platform's length limit, links in the body, hashtag rules, emoji, first-person claims, repeated stories, and a lead that names the source's company or project. Optional noise and prose checks also run. NewsRail refuses a draft that fails any check and logs the reason.
 
-**A post is recorded only after the platform confirms it.** After each send, the transport verifies the post. On Bluesky it reads the record back. On Threads it reads the published post back. On X it checks the post id and text that the API returned. Only a verified send marks the story as posted, and the store writes only verified posts. A send that cannot be verified keeps the story reserved and reports the slot as still owed.
+**NewsRail records a post after the platform confirms it.** The transport verifies every send. On Bluesky, it reads the record back. On Threads, it reads the published post back. On X, it checks the post id and text returned by the API. A verified send marks the story as posted, and the store writes only verified posts. An unverified send keeps the story reserved and reports the slot as still owed.
 
 **One config file per wire.** Sources, filters, prompt, gate, card, platforms, cadence and storage are all declared in one file. `runTick(config)` runs one tick of that wire.
 
@@ -18,11 +18,11 @@ NewsRail is a news agent. It polls sources, filters what it finds, writes a post
 npm install newsrail
 ```
 
-NewsRail needs Node 22.5 or newer. It has no required dependencies. `@resvg/resvg-js` installs as an optional dependency and turns cards into PNG files. Without it, cards are SVG, which is enough for a dry run and for a website but not for a platform upload.
+NewsRail requires Node 22.5 or newer. NewsRail has no required dependencies. `@resvg/resvg-js` is optional and converts cards to PNG files. Without it, NewsRail outputs SVG cards. SVG cards work for dry runs and websites, but platform uploads require PNG cards.
 
 ## Try it without posting anything
 
-The repository includes The Standup as a worked example. The Standup is a developer wire published by Compound Labs. Its beat is releases, CVEs, outages and breaking changes. The example polls public feeds only and needs no key.
+The repository includes The Standup as a worked example. Compound Labs publishes The Standup as a developer wire. The wire covers releases, CVEs, outages, and breaking changes. The example polls only public feeds and needs no key.
 
 ```sh
 git clone https://github.com/kyisaiah47/newsrail
@@ -31,7 +31,7 @@ npm install
 node src/cli.mjs tick examples/standup/wire.mjs --dry --provider stub
 ```
 
-`--dry` replaces every transport with a dry one that sends nothing, keeps separate state files, and writes only to local stores. `--provider stub` writes each post from the item's title, so no model is called. The tick polls about 1,400 items from vendor changelogs, status pages, GitHub release feeds and GitHub security advisories. It drops everything older than 12 hours, drafts a batch, gates it, renders a card, publishes to two dry transports and writes `.newsrail/standup/site/feed.json`.
+`--dry` replaces every transport with a dry transport that sends nothing. It keeps separate state files and writes only to local stores. `--provider stub` writes each post from the item's title, so it calls no model. The tick polls about 1,400 items from vendor changelogs, status pages, GitHub release feeds, and GitHub security advisories. It drops items older than 12 hours. It drafts a batch, gates the drafts, renders a card, publishes to two dry transports, and writes `.newsrail/standup/site/feed.json`.
 
 ## A wire config
 
@@ -62,7 +62,7 @@ export default defineWire({
 });
 ```
 
-Run one tick from the command line or from code.
+You can run one tick from the command line or from code.
 
 ```sh
 npx newsrail tick my-wire.mjs
@@ -106,16 +106,16 @@ const { posted, held, owed } = await runTick(wire, { dry: false });
 
 ## How a tick runs
 
-1. **poll** runs every source adapter and merges the items on a canonical URL key.
-2. **select** applies the hard filters, drops stories the wire already claimed, ranks the rest by score and cuts the batch.
-3. **write** sends the batch to the model in one call. Each draft goes through the code gate. A draft that passes is reserved in the claim ledger and queued.
-4. **illustrate** renders the card for the freshest queued draft. No card means no post: the draft stays queued and the tick reports the slot as owed.
-5. **publish** posts to each due platform, adds the source reply, verifies the post, and records it.
-6. **store** writes rows from the record of verified posts. It never fails the tick. A store error is logged and the next tick writes the same rows again.
+1. **poll** runs every source adapter and merges items by canonical URL key.
+2. **select** applies the hard filters, drops stories already claimed by the wire, ranks the remaining stories by score, and cuts the batch.
+3. **write** sends the batch to the model in one call. Each draft passes through the code gate. NewsRail reserves and queues a draft that passes.
+4. **illustrate** renders a card for the freshest queued draft. If no card exists, the draft stays queued and the tick reports the slot as owed.
+5. **publish** posts to each due platform, adds the source reply, verifies each post, and records it.
+6. **store** writes rows from verified post records. A store error does not fail the tick. NewsRail logs the error and writes the same rows on the next tick.
 
-`runTick` returns `{ posted, held, owed }`. `posted` lists `{ platform, url, id }` for each verified post. `held` says why nothing, or not everything, went out. `owed` is true when the reason is on the wire's side, such as no fresh story or a refused draft, and the next tick should try again. A platform signal (an auth failure, a rate limit, a suspension or an identity mismatch) stops that platform for the tick and is listed in `signals`.
+`runTick` returns `{ posted, held, owed }`. `posted` lists `{ platform, url, id }` for each verified post. `held` states why nothing or not everything went out. `owed` is true when the wire caused the hold, such as when no fresh story exists or a draft is refused. The next tick should try again when `owed` is true. A platform signal can report an auth failure, rate limit, suspension, or identity mismatch. The signal stops that platform for the tick and appears in `signals`.
 
-The command line exits 0 when the tick posted, owed a slot, or stopped on a platform signal. It exits 75 when the tick held for cadence or the arm flag, and 1 on a fault in the agent itself.
+The command line exits 0 when the tick posts, owes a slot, or stops on a platform signal. It exits 75 when cadence or the arm flag holds the tick. It exits 1 when the agent itself has a fault.
 
 ## Sources
 
@@ -128,7 +128,7 @@ The command line exits 0 when the tick posted, owed a slot, or stopped on a plat
 | `githubAdvisories({ severities })` | Reviewed GitHub security advisories that name a package. |
 | `jsonFeed({ url })` | JSON Feed 1.1 by default. Any JSON API works with `itemsPath` and `map`. |
 
-An adapter is any object with a `poll(ctx)` function that returns items. A failing adapter logs and returns nothing, so one broken feed never ends a tick.
+An adapter is any object with a `poll(ctx)` function that returns items. A failing adapter logs an error and returns nothing. One broken feed therefore does not end a tick.
 
 ## Transports
 
@@ -141,7 +141,7 @@ Every public transport uses the platform's official API.
 | `threads({ accessToken, hostImage })` | Threads API, container then publish | Reads the published post back |
 | `webhook({ url, secret })` | A JSON POST to your endpoint, signed with HMAC-SHA256 | The receiver's 2xx answer, or your own `verify` function |
 
-An `expectedHandle` makes the transport refuse to post from any other account. Threads needs a public URL for each image, so `hostImage(file)` uploads the card and returns its URL. `supabaseImageHost({ bucket })` is one implementation.
+An `expectedHandle` makes the transport refuse posts from other accounts. Threads requires a public URL for each image. `hostImage(file)` uploads the card and returns its URL. `supabaseImageHost({ bucket })` provides one implementation.
 
 ## Stores
 
@@ -153,7 +153,7 @@ An `expectedHandle` makes the transport refuse to post from any other account. T
 
 ## Models
 
-One provider interface covers every model. You bring your own key.
+NewsRail uses one provider interface for every model. You provide the model key.
 
 ```js
 import { createProvider } from 'newsrail';
@@ -166,11 +166,11 @@ createProvider({ type: 'command', command: 'my-model-cli', args: ['--model', '{m
 createProvider({ type: 'stub' });                                        // no model, for tests and dry runs
 ```
 
-`models: { compose: 'bigger-model' }` maps a wire's `purpose` to a model. A key is read from the environment only when a call runs and no `apiKey` was passed.
+`models: { compose: 'bigger-model' }` maps a wire's `purpose` to a model. NewsRail reads a key from the environment only when a call runs and no `apiKey` was passed.
 
 ## Cards
 
-`renderCard()` draws one of two layouts. The `software` card is a 1200 by 630 landscape card: a dark grid plate, a small kicker with the wire's accent mark, the headline, an optional object image, and the publication and source along the bottom. The `news` card is a 1080 by 1350 portrait card: a photograph, a dark scrim, a kicker pill in the accent colour, a large headline and a bar with the source and the photo credit. A news card needs a photograph; without one the draft stays queued.
+`renderCard()` draws one of two layouts. The `software` card measures 1200 by 630 pixels and uses a dark grid plate, a small kicker with the wire's accent mark, a headline, an optional object image, and the publication and source along the bottom. The `news` card measures 1080 by 1350 pixels and uses a photograph, a dark scrim, a kicker pill in the accent colour, a large headline, and a bar with the source and photo credit. A news card requires a photograph. Without one, the draft stays queued.
 
 ## A site for the wire
 
@@ -178,7 +178,7 @@ createProvider({ type: 'stub' });                                        // no m
 npx newsrail new-app --app both --dir ./site --name "My Wire"
 ```
 
-`new-app` writes a Next.js site that reads the wire's JSON feed from `public/feed.json`, or from a URL with `--feed`. `--app console` gives a dense view with filters, a table of posts and a detail panel. `--app simple` gives a roomier view with the newest post first and details behind disclosures. `--app both` gives both views, a Start here dialog and a switch in the footer. The visitor's choice is saved, and `?view=simple` or `?view=console` overrides it.
+`new-app` writes a Next.js site that reads the wire's JSON feed from `public/feed.json` or from a URL passed with `--feed`. `--app console` creates a dense view with filters, a table of posts, and a detail panel. `--app simple` creates a roomier view with the newest post first and details behind disclosures. `--app both` creates both views, a Start here dialog, and a switch in the footer. The site saves the visitor's choice. `?view=simple` or `?view=console` overrides that choice.
 
 ## Scheduling
 
@@ -193,8 +193,8 @@ npm test
 node scripts/scrub-gate.mjs
 ```
 
-The tests run offline with a stub model and fake HTTP. No test reads a paid model key. The scrub gate fails on private addresses, private identifiers, account handles, key-shaped strings and bot-detection bypass code. CI runs both on every push.
+The tests run offline with a stub model and fake HTTP. No test reads a paid model key. The scrub gate fails on private addresses, private identifiers, account handles, key-shaped strings, and bot-detection bypass code. CI runs both test commands on every push.
 
 ## License
 
-MIT. Copyright Compound Labs. NewsRail is made by [Compound Labs](https://thecompound.tech).
+NewsRail uses the MIT license. Compound Labs owns the copyright. Compound Labs makes NewsRail: [Compound Labs](https://thecompound.tech).

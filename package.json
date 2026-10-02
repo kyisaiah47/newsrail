@@ -1,7 +1,7 @@
 {
   "name": "newsrail",
   "version": "0.1.0",
-  "description": "A news agent. It polls sources, filters, writes, illustrates, publishes and stores one wire per config file.",
+  "description": "NewsRail polls sources, filters items, writes posts, renders cards, publishes posts, and stores records. Each wire uses one config file.",
   "type": "module",
   "main": "./src/index.mjs",
   "exports": {
