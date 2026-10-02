@@ -33,6 +33,10 @@ node src/cli.mjs tick examples/standup/wire.mjs --dry --provider stub
 
 `--dry` replaces every transport with a dry transport that sends nothing. It keeps separate state files and writes only to local stores. `--provider stub` writes each post from the item's title, so it calls no model. The tick polls about 1,400 items from vendor changelogs, status pages, GitHub release feeds, and GitHub security advisories. It drops items older than 12 hours. It drafts a batch, gates the drafts, renders a card, publishes to two dry transports, and writes `.newsrail/standup/site/feed.json`.
 
+## Video tutorial
+
+The video tutorial is at https://youtu.be/xArPj7liCm0. It runs the dry tick of The Standup from a fresh clone. It reads the wire config line by line. It shows the files you change to build a different wire, and it creates the site with `new-app`.
+
 ## A wire config
 
 ```js
