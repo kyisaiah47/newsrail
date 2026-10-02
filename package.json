@@ -27,6 +27,7 @@
   "scripts": {
     "test": "node --test \"test/*.test.mjs\"",
     "scrub": "node scripts/scrub-gate.mjs",
+    "example": "node src/cli.mjs tick examples/standup/wire.mjs --dry --provider stub",
     "example:dry": "node src/cli.mjs tick examples/standup/wire.mjs --dry"
   },
   "engines": {
@@ -53,7 +54,7 @@
   ],
   "license": "MIT",
   "author": "Compound Labs (https://thecompound.tech)",
-  "homepage": "https://github.com/kyisaiah47/newsrail#readme",
+  "homepage": "https://newsrail.thecompound.tech",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kyisaiah47/newsrail.git"
