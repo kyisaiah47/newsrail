@@ -1,0 +1,452 @@
+{
+ "feeds": [
+  {
+   "url": "https://openai.com/news/rss.xml",
+   "name": "OpenAI"
+  },
+  {
+   "url": "https://github.blog/changelog/feed/",
+   "name": "GitHub Changelog"
+  },
+  {
+   "url": "https://vercel.com/atom",
+   "name": "Vercel"
+  },
+  {
+   "url": "https://blog.cloudflare.com/rss/",
+   "name": "Cloudflare"
+  },
+  {
+   "url": "https://stripe.com/blog/feed.rss",
+   "name": "Stripe"
+  },
+  {
+   "url": "https://supabase.com/rss.xml",
+   "name": "Supabase"
+  },
+  {
+   "url": "https://simonwillison.net/atom/everything/",
+   "name": "Simon Willison"
+  },
+  {
+   "url": "https://www.postgresql.org/news.rss",
+   "name": "PostgreSQL"
+  },
+  {
+   "url": "https://nodejs.org/en/feed/blog.xml",
+   "name": "Node.js"
+  },
+  {
+   "url": "https://deno.com/feed",
+   "name": "Deno"
+  },
+  {
+   "url": "https://bun.sh/rss.xml",
+   "name": "Bun"
+  },
+  {
+   "url": "https://blog.rust-lang.org/feed.xml",
+   "name": "Rust"
+  },
+  {
+   "url": "https://go.dev/blog/feed.atom",
+   "name": "Go"
+  },
+  {
+   "url": "https://kubernetes.io/feed.xml",
+   "name": "Kubernetes"
+  },
+  {
+   "url": "https://huggingface.co/blog/feed.xml",
+   "name": "Hugging Face"
+  },
+  {
+   "url": "https://fly.io/blog/feed.xml",
+   "name": "Fly.io"
+  },
+  {
+   "url": "https://aws.amazon.com/blogs/aws/feed/",
+   "name": "AWS"
+  },
+  {
+   "url": "https://developer.apple.com/news/releases/rss/releases.rss",
+   "name": "Apple Developer Releases"
+  },
+  {
+   "url": "https://webkit.org/feed/",
+   "name": "WebKit"
+  },
+  {
+   "url": "https://www.ruby-lang.org/en/feeds/news.rss",
+   "name": "Ruby"
+  },
+  {
+   "url": "https://blog.python.org/feeds/posts/default?alt=rss",
+   "name": "Python"
+  },
+  {
+   "url": "https://www.php.net/feed.atom",
+   "name": "PHP"
+  },
+  {
+   "url": "https://www.djangoproject.com/rss/weblog/",
+   "name": "Django"
+  },
+  {
+   "url": "https://devblogs.microsoft.com/dotnet/feed/",
+   "name": ".NET"
+  },
+  {
+   "url": "https://nodejs.org/en/feed/vulnerability.xml",
+   "name": "Node.js Security"
+  },
+  {
+   "url": "https://ubuntu.com/security/notices/rss.xml",
+   "name": "Ubuntu Security"
+  },
+  {
+   "url": "https://cloud.google.com/feeds/gcp-release-notes.xml",
+   "name": "Google Cloud"
+  }
+ ],
+ "status": [
+  {
+   "url": "https://www.githubstatus.com/history.rss",
+   "name": "GitHub"
+  },
+  {
+   "url": "https://status.openai.com/history.rss",
+   "name": "OpenAI"
+  },
+  {
+   "url": "https://status.anthropic.com/history.rss",
+   "name": "Anthropic"
+  },
+  {
+   "url": "https://www.cloudflarestatus.com/history.rss",
+   "name": "Cloudflare"
+  },
+  {
+   "url": "https://www.vercel-status.com/history.rss",
+   "name": "Vercel"
+  },
+  {
+   "url": "https://status.npmjs.org/history.rss",
+   "name": "npm"
+  },
+  {
+   "url": "https://www.netlifystatus.com/history.rss",
+   "name": "Netlify"
+  },
+  {
+   "url": "https://status.supabase.com/history.rss",
+   "name": "Supabase"
+  },
+  {
+   "url": "https://status.mongodb.com/history.rss",
+   "name": "MongoDB Atlas"
+  },
+  {
+   "url": "https://status.sentry.io/history.rss",
+   "name": "Sentry"
+  },
+  {
+   "url": "https://status.datadoghq.com/history.rss",
+   "name": "Datadog"
+  },
+  {
+   "url": "https://status.render.com/history.rss",
+   "name": "Render"
+  },
+  {
+   "url": "https://status.heroku.com/feed",
+   "name": "Heroku"
+  },
+  {
+   "url": "https://status.circleci.com/history.rss",
+   "name": "CircleCI"
+  },
+  {
+   "url": "https://status.hashicorp.com/history.rss",
+   "name": "HashiCorp Cloud"
+  },
+  {
+   "url": "https://status.elastic.co/history.rss",
+   "name": "Elastic Cloud"
+  },
+  {
+   "url": "https://status.snowflake.com/history.rss",
+   "name": "Snowflake"
+  }
+ ],
+ "releases": [
+  {
+   "repo": "vercel/next.js",
+   "name": "Next.js"
+  },
+  {
+   "repo": "facebook/react",
+   "name": "React"
+  },
+  {
+   "repo": "microsoft/TypeScript",
+   "name": "TypeScript"
+  },
+  {
+   "repo": "nodejs/node",
+   "name": "Node.js"
+  },
+  {
+   "repo": "denoland/deno",
+   "name": "Deno"
+  },
+  {
+   "repo": "oven-sh/bun",
+   "name": "Bun"
+  },
+  {
+   "repo": "vitejs/vite",
+   "name": "Vite"
+  },
+  {
+   "repo": "tailwindlabs/tailwindcss",
+   "name": "Tailwind CSS"
+  },
+  {
+   "repo": "postgres/postgres",
+   "name": "PostgreSQL"
+  },
+  {
+   "repo": "redis/redis",
+   "name": "Redis"
+  },
+  {
+   "repo": "prisma/prisma",
+   "name": "Prisma"
+  },
+  {
+   "repo": "supabase/supabase",
+   "name": "Supabase"
+  },
+  {
+   "repo": "kubernetes/kubernetes",
+   "name": "Kubernetes"
+  },
+  {
+   "repo": "cloudflare/workerd",
+   "name": "workerd"
+  },
+  {
+   "repo": "python/cpython",
+   "name": "CPython"
+  },
+  {
+   "repo": "rust-lang/rust",
+   "name": "Rust"
+  },
+  {
+   "repo": "golang/go",
+   "name": "Go"
+  },
+  {
+   "repo": "astral-sh/uv",
+   "name": "uv"
+  },
+  {
+   "repo": "astral-sh/ruff",
+   "name": "Ruff"
+  },
+  {
+   "repo": "pytorch/pytorch",
+   "name": "PyTorch"
+  },
+  {
+   "repo": "huggingface/transformers",
+   "name": "Transformers"
+  },
+  {
+   "repo": "ollama/ollama",
+   "name": "Ollama"
+  },
+  {
+   "repo": "ggml-org/llama.cpp",
+   "name": "llama.cpp"
+  },
+  {
+   "repo": "stripe/stripe-node",
+   "name": "Stripe Node"
+  },
+  {
+   "repo": "hashicorp/terraform",
+   "name": "Terraform"
+  },
+  {
+   "repo": "hashicorp/vault",
+   "name": "Vault"
+  },
+  {
+   "repo": "grafana/grafana",
+   "name": "Grafana"
+  },
+  {
+   "repo": "prometheus/prometheus",
+   "name": "Prometheus"
+  },
+  {
+   "repo": "open-telemetry/opentelemetry-collector",
+   "name": "OpenTelemetry Collector"
+  },
+  {
+   "repo": "elastic/elasticsearch",
+   "name": "Elasticsearch"
+  },
+  {
+   "repo": "ClickHouse/ClickHouse",
+   "name": "ClickHouse"
+  },
+  {
+   "repo": "duckdb/duckdb",
+   "name": "DuckDB"
+  },
+  {
+   "repo": "valkey-io/valkey",
+   "name": "Valkey"
+  },
+  {
+   "repo": "minio/minio",
+   "name": "MinIO"
+  },
+  {
+   "repo": "etcd-io/etcd",
+   "name": "etcd"
+  },
+  {
+   "repo": "apache/airflow",
+   "name": "Airflow"
+  },
+  {
+   "repo": "dbt-labs/dbt-core",
+   "name": "dbt"
+  },
+  {
+   "repo": "containerd/containerd",
+   "name": "containerd"
+  },
+  {
+   "repo": "moby/moby",
+   "name": "Moby"
+  },
+  {
+   "repo": "helm/helm",
+   "name": "Helm"
+  },
+  {
+   "repo": "argoproj/argo-cd",
+   "name": "Argo CD"
+  },
+  {
+   "repo": "istio/istio",
+   "name": "Istio"
+  },
+  {
+   "repo": "traefik/traefik",
+   "name": "Traefik"
+  },
+  {
+   "repo": "caddyserver/caddy",
+   "name": "Caddy"
+  },
+  {
+   "repo": "envoyproxy/envoy",
+   "name": "Envoy"
+  },
+  {
+   "repo": "nginx/nginx",
+   "name": "nginx"
+  },
+  {
+   "repo": "curl/curl",
+   "name": "curl"
+  },
+  {
+   "repo": "openssl/openssl",
+   "name": "OpenSSL"
+  },
+  {
+   "repo": "git/git",
+   "name": "Git"
+  },
+  {
+   "repo": "npm/cli",
+   "name": "npm CLI"
+  },
+  {
+   "repo": "pnpm/pnpm",
+   "name": "pnpm"
+  },
+  {
+   "repo": "evanw/esbuild",
+   "name": "esbuild"
+  },
+  {
+   "repo": "biomejs/biome",
+   "name": "Biome"
+  },
+  {
+   "repo": "electron/electron",
+   "name": "Electron"
+  },
+  {
+   "repo": "angular/angular",
+   "name": "Angular"
+  },
+  {
+   "repo": "sveltejs/svelte",
+   "name": "Svelte"
+  },
+  {
+   "repo": "withastro/astro",
+   "name": "Astro"
+  },
+  {
+   "repo": "vuejs/core",
+   "name": "Vue"
+  },
+  {
+   "repo": "django/django",
+   "name": "Django"
+  },
+  {
+   "repo": "rails/rails",
+   "name": "Rails"
+  },
+  {
+   "repo": "laravel/framework",
+   "name": "Laravel"
+  },
+  {
+   "repo": "spring-projects/spring-boot",
+   "name": "Spring Boot"
+  },
+  {
+   "repo": "dotnet/runtime",
+   "name": ".NET Runtime"
+  },
+  {
+   "repo": "tokio-rs/tokio",
+   "name": "Tokio"
+  },
+  {
+   "repo": "vllm-project/vllm",
+   "name": "vLLM"
+  },
+  {
+   "repo": "numpy/numpy",
+   "name": "NumPy"
+  },
+  {
+   "repo": "pandas-dev/pandas",
+   "name": "pandas"
+  }
+ ]
+}

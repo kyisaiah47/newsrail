@@ -1,0 +1,64 @@
+{
+  "name": "newsrail",
+  "version": "0.1.0",
+  "description": "A news agent. It polls sources, filters, writes, illustrates, publishes and stores one wire per config file.",
+  "type": "module",
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./sources": "./src/sources/index.mjs",
+    "./transports": "./src/transports/index.mjs",
+    "./stores": "./src/stores/index.mjs",
+    "./providers": "./src/providers/index.mjs",
+    "./gates": "./src/gates/index.mjs",
+    "./card": "./src/card/render.mjs",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "newsrail": "src/cli.mjs"
+  },
+  "files": [
+    "src",
+    "templates",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "scrub": "node scripts/scrub-gate.mjs",
+    "example:dry": "node src/cli.mjs tick examples/standup/wire.mjs --dry"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "optionalDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  },
+  "keywords": [
+    "news",
+    "agent",
+    "rss",
+    "atom",
+    "hacker-news",
+    "github",
+    "bluesky",
+    "atproto",
+    "threads",
+    "x-api",
+    "webhook",
+    "json-feed",
+    "llm",
+    "wire"
+  ],
+  "license": "MIT",
+  "author": "Compound Labs (https://thecompound.tech)",
+  "homepage": "https://github.com/kyisaiah47/newsrail#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyisaiah47/newsrail.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kyisaiah47/newsrail/issues"
+  }
+}

@@ -1,0 +1,813 @@
+{
+ "$comment": "Ported from the Compound Labs copy gates. Each pattern carries scope flags: copy (outward copy, which is what NewsRail checks), answer and reply. A pattern may carry requires, unless (regexes tested against the sentence around the hit) and min_words.",
+ "rule": "No noise. State the fact. Do not announce that you are being honest, do not say no without the word, and do not narrate the answer before giving it.",
+ "copy_rule": "No filler. Copy states what happened and what it changes, in plain nouns and verbs. Phrases that fit any product (designed to, built to help, seamlessly, powerful, robust, cutting-edge, unlock, empower, supercharge, the ultimate, look no further) are banned in any wording, and so is a rhetorical hook.",
+ "families": {
+  "1": {
+   "name": "performed-sincerity",
+   "title": "PERFORMED SINCERITY",
+   "what": "a phrase announcing that the speaker is being honest instead of being honest"
+  },
+  "2": {
+   "name": "euphemism-for-no",
+   "title": "EUPHEMISM FOR NO",
+   "what": "saying no without the word; the answer to \"experience with X?\" when there is none is \"No experience.\" or \"None.\""
+  },
+  "3": {
+   "name": "narrating-the-answer",
+   "title": "NARRATING THE ANSWER",
+   "what": "a sentence about the speaker's stance toward the answer instead of the answer"
+  },
+  "4": {
+   "name": "filler-noise",
+   "title": "FILLER NOISE IN PRODUCT COPY",
+   "what": "describing a product or feature with padding instead of what it does; the product stands on what it does"
+  },
+  "5": {
+   "name": "self-putdown",
+   "title": "COPY THAT PUTS OUR OWN PRODUCT DOWN",
+   "what": "a clause whose subject is our own product, its output, the studio or the founder's own work, and whose predicate says it is unwanted, unasked for, unnecessary, small, a toy or a joke; a plain stated limit is not this"
+  }
+ },
+ "patterns": [
+  {
+   "slug": "honesty-preface",
+   "family": 1,
+   "pattern": "\\b(?:to\\s+be\\s+(?:(?:completely|totally|fully|perfectly|brutally|entirely|very)\\s+)?(?:transparent|honest|candid|frank|straight|upfront|fair|blunt|real|direct)(?:\\s+with\\s+you)?|in\\s+the\\s+interest\\s+of\\s+(?:honesty|transparency|full\\s+disclosure|candou?r|being\\s+(?:honest|upfront|transparent))|full\\s+disclosure|in\\s+all\\s+honesty|in\\s+full\\s+transparency|for\\s+(?:full\\s+)?transparency(?:['’]s\\s+sake)?|for\\s+(?:the\\s+sake\\s+of\\s+)?honesty|(?:i|we)(?:\\s+will|['’]ll)\\s+be\\s+(?:honest|transparent|upfront|candid|straight|blunt|direct|frank|real)(?:\\s+with\\s+you)?)\\b",
+   "fix": "delete the preface; say the thing",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "honest-adverb",
+   "family": 1,
+   "pattern": "(?:^|[.!?;:(]\\s*|,\\s+|\\*\\*)(?:quite\\s+|very\\s+|just\\s+)?(?:honestly|truthfully|frankly|candidly)\\s*[,:?.!]|\\b(?:i|we)\\s+(?:honestly|truthfully|frankly|candidly)\\s+(?:think|don['’]?t|do\\s+not|can['’]?t|cannot|have|had|am|would|could|believe|feel|know)\\b|\\bif\\s+(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+(?:being\\s+)?(?:honest|candid|frank)\\b|\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+being\\s+(?:honest|candid|frank|real)\\b",
+   "fix": "delete the adverb; the sentence is the same without it",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "want-to-be-clear",
+   "family": 1,
+   "pattern": "\\b(?:i|we)\\s+(?:want|need|have|ought|would\\s+like)\\s+to\\s+be\\s+(?:clear|upfront|honest|transparent|candid|straight|direct|blunt)\\b|\\blet\\s+me\\s+be\\s+(?:clear|honest|upfront|candid|blunt|direct|frank|straight|real)\\b|\\b(?:i|we)\\s+should\\s+be\\s+(?:upfront|clear|honest|transparent|candid)\\b|\\b(?:just\\s+)?(?:so|to)\\s+be\\s+clear\\s*[,:]",
+   "fix": "delete the sentence; what follows it stands on its own",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "real-talk",
+   "family": 1,
+   "pattern": "\\breal\\s+talk\\b|\\bnot\\s+gonna\\s+lie\\b|\\bngl\\b|\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+not\\s+going\\s+to\\s+lie\\b|\\b(?:i|we)\\s+(?:won['’]t|will\\s+not)\\s+(?:lie|sugar-?coat|pretend|bullshit)\\b|\\bno\\s+sugar-?coating\\b|\\b(?:i|we)(?:['’]ll|\\s+will)\\s+level\\s+with\\s+you\\b|\\bcards\\s+on\\s+the\\s+table\\b|\\bstraight\\s+up\\s*[,:]|\\btruth\\s+be\\s+told\\b|\\bto\\s+tell\\s+(?:you\\s+)?the\\s+truth\\b|\\bthe\\s+honest\\s+(?:truth|answer|version)\\s+is\\b",
+   "fix": "delete it; a person being honest just says the thing",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "no-direct-experience",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:do\\s+not|don['’]?t)\\s+have\\s+(?:direct|specific|hands-on|much|any|extensive|deep|formal|professional|production|commercial|prior|a\\s+lot\\s+of|a\\s+ton\\s+of)?\\s*(?:experience|exposure|background|familiarity)\\b",
+   "fix": "the answer is No experience. (or None.), nothing after it",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "concessive-while-not",
+   "family": 2,
+   "pattern": "\\b(?:while|although|though|even\\s+though)\\s+(?:i|we)(?:\\s+(?:have\\s+not|haven['’]?t|have\\s+never|never|do\\s+not|don['’]?t|am\\s+not|lack|did\\s+not|didn['’]?t|can['’]?t|cannot)|['’]m\\s+not)\\b",
+   "fix": "drop the concessive clause; if the question was about the thing not done, the answer is No.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "have-not-done",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:have\\s+not|haven['’]?t|have\\s+never|hadn['’]?t|had\\s+not)\\s+(?:yet\\s+|personally\\s+|actually\\s+|really\\s+)?(?:used|worked|built|shipped|deployed|touched|looked|seen|tried|read|checked|had|done|run|written|managed|led|owned|scanned|reviewed|visited|audited|operated|maintained|configured|set\\s+up|dealt|handled)\\b",
+   "fix": "delete it; No experience. is the answer, not a sentence about what was not done",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-certain-bare",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+not\\s+(?:entirely\\s+|totally\\s+|100%\\s+|fully\\s+|completely\\s+)?(?:certain|sure|positive|confident)\\b",
+   "fix": "delete the hedge; give the answer or the shortest true fact",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-certain-however",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+not\\s+(?:entirely\\s+|totally\\s+|100%\\s+|fully\\s+|completely\\s+)?(?:certain|sure|positive|confident)\\b[^.!?\\n]{0,40}\\b(?:but|however|though|that\\s+said)\\b",
+   "fix": "delete the hedge and the pivot; keep the clause that answers",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "cannot-speak-to",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+(?:cannot|can['’]?t|could\\s+not|couldn['’]?t|am\\s+not\\s+able\\s+to)|['’]m\\s+not\\s+able\\s+to)\\s+(?:really\\s+)?(?:speak|comment|attest|vouch)\\s+(?:to|on|about|for)\\b",
+   "fix": "delete it; the answer to the part not known is No experience., and stop",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "na-though",
+   "family": 2,
+   "pattern": "\\bn\\s*/?\\s*a\\b\\s*[,;:.\\-]?\\s*(?:though|but|however|although|that\\s+said)\\b",
+   "fix": "a plain N/A or No, nothing after it",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-applicable-but",
+   "family": 2,
+   "pattern": "\\bnot\\s+applicable\\b[^.!?\\n]{0,60}\\b(?:though|but|however|although|that\\s+said)\\b|\\bnot\\s+applicable\\s+to\\s+(?:my|our)\\b",
+   "fix": "a plain No or N/A, nothing about the background",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "softened-no",
+   "family": 2,
+   "pattern": "\\b(?:limited|little|minimal|less|not\\s+much|not\\s+a\\s+lot\\s+of|some|modest|light|passing|surface-?level|basic)\\s+(?:direct\\s+|hands-on\\s+|formal\\s+|prior\\s+|specific\\s+|professional\\s+|production\\s+|real\\s+|meaningful\\s+|practical\\s+)?(?:experience|exposure|familiarity|background)\\s+(?:with|in|on|of|to|using|building|around)\\b",
+   "fix": "the softener is a no wearing a hedge; write No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "no-experience-pivot",
+   "family": 2,
+   "pattern": "\\b(?:no|zero)\\s+(?:direct\\s+|hands-on\\s+|formal\\s+|prior\\s+|specific\\s+|professional\\s+|production\\s+|real\\s+)?(?:experience|exposure|familiarity|background)\\s+(?:with|in|on|of|using|building)\\b[^.!?\\n]{0,80}\\b(?:but|though|however|although|that\\s+said|yet|still)\\b",
+   "fix": "cut everything after the no; No experience. is the whole answer",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "no-then-pivot",
+   "family": 2,
+   "pattern": "\\b(?:no\\s+experience|none|no)\\s*\\.\\s+(?:that\\s+said,?\\s+|however,?\\s+|but\\s+|though\\s+|still,?\\s+)?(?:i|we|my|our)\\b",
+   "fix": "stop after the no; the compensating strength is a pivot nobody asked for",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "my-gap",
+   "family": 2,
+   "pattern": "\\b(?:is|are|was|were|remains?|would\\s+be)\\s+(?:my|our)\\s+(?:biggest\\s+|main\\s+|one\\s+|real\\s+|only\\s+|obvious\\s+|honest\\s+)?gap\\b|\\b(?:my|our)\\s+(?:biggest\\s+|main\\s+|one\\s+|real\\s+|obvious\\s+)?gaps?\\s+(?:is|are|was|were|here|there|would)\\b|\\ba\\s+gap\\s+for\\s+(?:me|us)\\b|\\ba\\s+gap\\s+in\\s+(?:my|our)\\s+(?:experience|background|skills?|knowledge|resume|cv|stack|expertise)\\b|\\bwhere\\s+(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+(?:weakest|thinnest|lightest)\\b",
+   "fix": "nobody talks like that; write No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "claim-depth",
+   "family": 2,
+   "pattern": "\\bclaim\\s+(?:deep\\s+|real\\s+|much\\s+|any\\s+|genuine\\s+)?(?:depth|expertise|mastery|fluency|proficiency)\\b|\\bnot\\s+something\\s+(?:i|we)(?:\\s+would|['’]d)\\s+(?:claim|call)\\b|\\b(?:i|we)(?:\\s+would|['’]d)\\s+(?:not|never)\\s+(?:claim|call\\s+myself|call\\s+ourselves)\\b|\\bwouldn['’]?t\\s+(?:claim|call\\s+myself|call\\s+ourselves)\\b",
+   "fix": "delete it; a skill is claimed or the answer is No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-strongest",
+   "family": 2,
+   "pattern": "\\bnot\\s+(?:my|our)\\s+(?:strongest|strong|best|deepest|primary|core|main)\\s+(?:area|suit|skill|stack|language|domain|expertise|side|point)\\b|\\bnot\\s+(?:my|our)\\s+strongest\\b|\\b(?:my|our)\\s+(?:weaker|weakest|weak|thin|thinnest|lighter|lightest)\\s+(?:area|spot|side|point|skill)\\b|\\bless\\s+depth\\b",
+   "fix": "delete it; state what is claimable, or No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "want-to-learn",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+would|['’]d)\\s+(?:want|like|love|need|be\\s+happy|be\\s+glad|be\\s+keen|hope|expect)\\s+to\\s+(?:learn|pick\\s+(?:it|that|this|them|\\w+)\\s+up|ramp|get\\s+up\\s+to\\s+speed|deepen|grow|develop|build\\s+(?:up\\s+)?(?:my|our))\\b|\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+(?:eager|keen|excited|happy|willing|open|ready)\\s+to\\s+learn\\b|\\bwilling\\s+to\\s+learn\\b|\\bquick\\s+(?:study|learner)\\b|\\blearn\\s+(?:it\\s+)?(?:fast|quickly)\\s+on\\s+the\\s+job\\b",
+   "fix": "delete it; wanting to learn a thing is a no about the thing",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "would-pick-up",
+   "family": 2,
+   "pattern": "\\brather\\s+than\\s+claim\\b|\\bwould\\s+(?:need|have)\\s+to\\s+(?:learn|pick\\s+up|ramp|get\\s+up\\s+to\\s+speed|brush\\s+up)\\b|\\b(?:would|could|can|will|['’]d)\\s+(?:quickly\\s+|easily\\s+)?pick\\s+(?:it|that|them|this)?\\s*up\\b(?:\\s+on\\s+the\\s+job)?|\\bpick\\s+(?:it|that|this|them)\\s+up\\s+on\\s+the\\s+job\\b|\\btreat\\s+\\w+\\s+as\\s+something\\s+(?:i|we)\\b|\\b(?<!not one )(?<!not something )(?:i|we)(?:\\s+would|['’]d)\\s+(?:be\\s+)?(?:learning|ramping)\\b",
+   "fix": "delete it; a skill is claimed or the answer is No experience.",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "still-growing",
+   "family": 2,
+   "pattern": "\\bstill\\s+(?:growing|developing|building|learning|ramping|early)\\s+(?:there|in|on|with|at|my|our|that|here)\\b|\\b(?:an?\\s+)?(?:area|skill|space|domain|muscle)\\s+(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+(?:still\\s+|actively\\s+)?(?:developing|growing|building|working\\s+on|learning|sharpening)\\b|\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+still\\s+(?:learning|ramping|getting\\s+up\\s+to\\s+speed|coming\\s+up\\s+to\\s+speed|new\\s+to)\\b|\\bgetting\\s+up\\s+to\\s+speed\\s+(?:on|with)\\b",
+   "fix": "delete it; No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "dont-know",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:don['’]?t|do\\s+not)\\s+know\\s+(?:much|anything|enough|a\\s+lot|the\\s+answer|how\\s+to|the\\s+(?:tool|stack|product|platform|space)|\\w+\\s+(?:well|deeply|in\\s+depth))\\b|(?:^|[.!?]\\s+)(?:i|we)\\s+(?:don['’]?t|do\\s+not)\\s+know\\s*[.,;!]",
+   "fix": "give the shortest true answer that fits the field",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-a-finding",
+   "family": 2,
+   "pattern": "\\bnothing\\s+(?:below|here|above|in\\s+this|in\\s+the\\s+following)\\s+is\\s+(?:a\\s+)?(?:finding|claim|based)\\b|\\bwithout\\s+(?:having\\s+)?(?:looked|seen|reviewed|checked|scanned|read)\\b|\\b(?:i|we)\\s+(?:can['’]?t|cannot|won['’]?t|will\\s+not)\\s+(?:claim|pretend|say\\s+(?:that\\s+)?(?:i|we)\\s+have)\\b|\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+not\\s+going\\s+to\\s+(?:guess|claim)\\b",
+   "fix": "delete it; lead with what is in hand",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-going-to-invent",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+not\\s+going\\s+to\\s+(?:invent|pretend|make\\s+(?:one|something|it|that)\\s+up|fabricate)\\b",
+   "fix": "delete it; a rule against inventing is satisfied by silence",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "unfortunately-not",
+   "family": 2,
+   "pattern": "\\b(?:unfortunately|regrettably|admittedly|sadly),?\\s+(?:i|we)(?:\\s+(?:have\\s+not|haven['’]?t|don['’]?t|do\\s+not|cannot|can['’]?t|lack|am\\s+not|have\\s+no|have\\s+never)|['’]m\\s+not)\\b",
+   "fix": "delete the sentence; the answer is No.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "i-lack",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:lack|am\\s+lacking|are\\s+lacking)\\s+(?:the\\s+|any\\s+|direct\\s+|hands-on\\s+)?(?:experience|exposure|background|depth|expertise|familiarity)\\b",
+   "fix": "delete it; No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "outside-wheelhouse",
+   "family": 2,
+   "pattern": "\\b(?:outside|beyond)\\s+(?:of\\s+)?(?:my|our)\\s+(?:direct\\s+|core\\s+|current\\s+)?(?:experience|expertise|wheelhouse|area|remit|comfort\\s+zone|depth|lane)\\b",
+   "fix": "delete it; No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "only-limited",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+have|['’]ve)?\\s+(?:only|just)\\s+(?:limited|some|a\\s+little|a\\s+bit\\s+of|basic|surface[- ]level|passing|light|minimal|cursory)\\s+(?:experience|exposure|familiarity|knowledge|understanding)\\b",
+   "fix": "delete it; state what was done as itself, or No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-something-i-have",
+   "family": 2,
+   "pattern": "\\bnot\\s+(?:something|an\\s+area|a\\s+space|a\\s+stack|a\\s+tool|a\\s+domain|a\\s+language)\\s+(?:i|we)\\s+(?:have|['’]ve|had|know|use|used)\\b",
+   "fix": "delete it; No experience.",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "no-chance-yet",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:haven['’]?t|have\\s+not)\\s+(?:yet\\s+)?(?:had\\s+)?(?:the\\s+|a\\s+|an\\s+)?(?:chance|opportunity|occasion)\\b|\\bhaven['’]?t\\s+had\\s+(?:the\\s+|a\\s+)?(?:chance|opportunity)\\s+to\\b",
+   "fix": "delete it; No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "new-to-me",
+   "family": 2,
+   "pattern": "\\b(?:is|would\\s+be|are|was|were)\\s+(?:relatively\\s+|fairly\\s+|still\\s+)?new\\s+to\\s+(?:me|us)\\b",
+   "fix": "delete it; No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "not-familiar",
+   "family": 2,
+   "pattern": "\\b(?:i|we)(?:\\s+am|['’]m|\\s+are|['’]re)\\s+(?:not\\s+(?:very\\s+|that\\s+|especially\\s+|deeply\\s+|as\\s+)?familiar|unfamiliar|less\\s+familiar)\\s+with\\b|\\bless\\s+familiar\\s+with\\b",
+   "fix": "delete it; No experience.",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "no-answer-example",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:don['’]?t|do\\s+not)\\s+have\\s+(?:a\\s+)?(?:direct\\s+|specific\\s+|good\\s+|great\\s+|clean\\s+|perfect\\s+)?(?:answer|example|story|anecdote|case|number|figure|data\\s+point)\\s+(?:for|to|on|here)\\b",
+   "fix": "give the example as itself, or the plain No",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "cant-give-comparison",
+   "family": 2,
+   "pattern": "\\b(?:i|we)\\s+(?:can['’]?t|cannot|couldn['’]?t)\\s+(?:really\\s+|honestly\\s+)?(?:give|offer|provide)\\s+(?:you\\s+)?(?:an?\\s+)?(?:honest\\s+|proper\\s+|real\\s+|fair\\s+|direct\\s+|specific\\s+|full\\s+|meaningful\\s+)?(?:side-?by-?side|comparison|answer|number|figure|opinion|assessment)\\b",
+   "fix": "answer about ours and stop",
+   "reply": false,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "caveat-i",
+   "family": 2,
+   "pattern": "\\b(?:(?:one\\s+)?caveat\\s*[:,]\\s*|the\\s+(?:only\\s+|one\\s+)?caveat\\s+(?:is|being)\\s+(?:that\\s+)?)(?:i|we)(?:\\s+(?:have\\s+not|haven['’]?t|have\\s+never|never|do\\s+not|don['’]?t|am\\s+not|cannot|can['’]?t|lack|only|have\\s+only)|['’]m\\s+not|['’]ve\\s+only)\\b",
+   "fix": "delete the caveat",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "to-be-clear-not",
+   "family": 2,
+   "pattern": "\\bto\\s+be\\s+clear,?\\s+(?:i|we)(?:\\s+(?:have\\s+not|haven['’]?t|don['’]?t|do\\s+not|cannot|can['’]?t|am\\s+not|never)|['’]m\\s+not)\\b",
+   "fix": "delete the sentence",
+   "reply": true,
+   "answer": true,
+   "copy": false
+  },
+  {
+   "slug": "should-note",
+   "family": 3,
+   "pattern": "\\b(?:i|we)\\s+should\\s+(?:note|mention|say|flag|point\\s+out|add|clarify|caveat|disclose|acknowledge|admit)\\b|\\bit(?:['’]s|\\s+is)\\s+worth\\s+(?:mentioning|noting|saying|pointing\\s+out|flagging|adding|calling\\s+out)\\b|\\bworth\\s+(?:noting|mentioning|flagging)\\s*[:,]|\\b(?:one|a)\\s+(?:thing|note|point)\\s+worth\\s+(?:noting|mentioning|flagging)\\b|\\b(?:i|we)\\s+(?:would|want\\s+to|['’]d\\s+like\\s+to|['’]d)\\s+(?:note|flag|point\\s+out|add|mention|acknowledge|admit)\\s+(?:that|here|up\\s+front|upfront)\\b",
+   "fix": "delete the announcement; write the thing it was announcing",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "id-say",
+   "family": 3,
+   "pattern": "\\b(?:i|we)(?:\\s+would|['’]d)\\s+(?:say|argue|call\\s+it|put\\s+it|describe\\s+it|characteri[sz]e\\s+it|frame\\s+it)\\b|\\b(?:i|we)\\s+(?:think|believe|guess|suppose|feel)\\s+(?:it(?:['’]s|\\s+is)\\s+)?(?:fair|safe|accurate|reasonable)\\s+to\\s+say\\b|\\bit(?:['’]s|\\s+is)\\s+(?:fair|safe|accurate|reasonable)\\s+to\\s+say\\b|\\b(?:i|we)\\s+(?:would|['’]d)\\s+(?:probably|likely)\\s+say\\b",
+   "fix": "delete the frame; state the thing",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "what-i-can-tell-you",
+   "family": 3,
+   "pattern": "\\bwhat\\s+(?:i|we)\\s+can\\s+(?:tell|say|offer|give)\\s+(?:you|them|here)\\b|\\bwhat\\s+(?:i|we)\\s+can\\s+say\\s+is\\b|\\bwhat\\s+(?:i|we)(?:['’]ll|\\s+will)\\s+say\\s+is\\b|\\bhere(?:['’]s|\\s+is)\\s+what\\s+(?:i|we)\\s+can\\s+(?:say|tell|offer|share)\\b|\\b(?:i|we)(?:['’]ll|\\s+will)\\s+say\\s+this\\s*[:,]",
+   "fix": "delete the frame; say it",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "short-version",
+   "family": 3,
+   "pattern": "\\bthe\\s+(?:short|long|quick|simple|tl;?dr|one-?line)\\s+(?:version|answer|of\\s+it)\\s+(?:is|being|:)|\\b(?:long|short)\\s+story\\s+short\\b|\\bin\\s+short\\s*[,:]|\\bto\\s+(?:put\\s+it\\s+)?(?:simply|briefly|summari[sz]e|sum\\s+up)\\b|\\b(?:put|stated)\\s+(?:simply|plainly|bluntly)\\s*[,:]|\\bsimply\\s+put\\s*[,:]|\\bthe\\s+bottom\\s+line\\s+(?:is|:)|\\bbottom\\s+line\\s*[:,]|\\bnet\\s+net\\b|\\bthe\\s+(?:upshot|gist|takeaway)\\s+(?:is|:)|\\bin\\s+a\\s+nutshell\\b|\\btl;?dr\\s*[:,]",
+   "fix": "delete the frame; write the short version as the whole answer",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "in-other-words",
+   "family": 3,
+   "pattern": "\\bin\\s+other\\s+words\\b|\\bput\\s+(?:another|a\\s+different)\\s+way\\b|\\bto\\s+put\\s+it\\s+another\\s+way\\b|\\bwhich\\s+is\\s+to\\s+say\\b|\\bthat\\s+is\\s+to\\s+say\\b|\\bor,?\\s+to\\s+put\\s+it\\b",
+   "fix": "one statement, not two; delete the restatement or delete the original",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "that-said",
+   "family": 3,
+   "pattern": "\\bthat\\s+(?:said|being\\s+said)\\b|\\bwith\\s+that\\s+(?:said|in\\s+mind|caveat)\\b|\\bhaving\\s+said\\s+(?:that|all\\s+that)\\b|\\ball\\s+that\\s+said\\b|\\bat\\s+the\\s+end\\s+of\\s+the\\s+day\\b|\\bwhen\\s+all\\s+is\\s+said\\s+and\\s+done\\b|\\bwhen\\s+it\\s+comes\\s+down\\s+to\\s+it\\b",
+   "fix": "delete the pivot; the second clause stands or it goes",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "my-take",
+   "family": 3,
+   "pattern": "\\bthe\\s+way\\s+(?:i|we)\\s+see\\s+it\\b|\\b(?:my|our)\\s+(?:honest\\s+|quick\\s+|rough\\s+|best\\s+|initial\\s+|gut\\s+)?(?:take|read|sense|guess|hunch|two\\s+cents)\\s+(?:is|here|on\\s+this|would\\s+be)\\b|\\bfor\\s+what\\s+it(?:['’]s|\\s+is)\\s+worth\\b|\\bfwiw\\b|\\bif\\s+you\\s+ask\\s+me\\b|\\bpersonally,\\s+(?:i|we)\\b",
+   "fix": "delete the frame; state the read as the answer",
+   "reply": true,
+   "answer": true,
+   "copy": true
+  },
+  {
+   "slug": "designed-to",
+   "family": 4,
+   "pattern": "\\bdesigned\\s+to\\s+(?:help|make|give|let|empower|enable|simplify|streamline|ensure|deliver|provide|support|keep|bring|take|be|work|fit|save|meet|handle|scale|get)\\b|\\b(?:built|created|engineered|crafted|made|tailored|purpose-?built|developed)\\s+to\\s+(?:help|empower|enable|simplify|streamline|ensure|deliver|provide|support|make\\s+(?:it|your|life)|give\\s+you|let\\s+you|keep\\s+you|save\\s+you)\\b|\\bdesigned\\s+(?:for\\s+(?:teams|businesses|founders|people|anyone|everyone|you)|with\\s+\\w+\\s+in\\s+mind)\\b",
+   "fix": "say what it does, not what it was designed to do",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "puff-adjective",
+   "family": 4,
+   "pattern": "\\b(?:seamless(?:ly)?|effortless(?:ly)?|powerful(?:ly)?|robust(?:ly)?|cutting-?edge|next-?gen(?:eration)?|game-?chang(?:ing|er|ers)|state-?of-?the-?art|best-?in-?class|world-?class|revolutionary|groundbreaking|innovative|intuitive(?:ly)?|user-?friendly|lightning-?fast|blazing(?:ly)?(?:-?fast)?|frictionless|all-?in-?one|feature-?rich|holistic|turnkey|enterprise-?grade|battle-?tested|hassle-?free|stress-?free|worry-?free|bespoke|top-?notch|first-?class)\\b",
+   "fix": "delete the adjective; a product that does the thing does not need it",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "puff-verb",
+   "family": 4,
+   "pattern": "\\b(?:streamlin(?:e|es|ing)\\s+(?:your|our|their|the\\s+way|every|all|workflows?|operations?|processes?|filings?|reporting|compliance|everything)|streamlined\\s+(?:your|workflows?|operations?|experience|solution|way\\s+to)|elevat(?:e|es|ing)\\s+(?:your|our|the|every)|unlock(?:s|ed|ing)?\\s+(?:the\\s+(?:power|potential|value|full)|your|new\\s+(?:levels?|possibilities|opportunities)|insights?|growth|efficiency|productivity|value)|empower(?:s|ed|ing|ment)?\\s+(?:your|you|teams|businesses|users|people)|supercharg(?:e|es|ed|ing)|turbocharg\\w*|leverag(?:e|es|ed|ing)\\s+(?:the\\s+power|ai|your|our|data|automation)|harness(?:es|ed|ing)?\\s+(?:the\\s+(?:power|potential|full)|ai|your|our|data)|unleash\\w*|revolutioni[sz]\\w*|transform(?:s|ed|ing)?\\s+(?:the\\s+way|how)\\s+(?:you|teams|businesses|people|companies)|reimagin\\w*|simplif(?:y|ies|ied|ying)\\s+(?:your|the\\s+way)|optimi[sz]\\w+\\s+your|boost(?:s|ed|ing)?\\s+your|maximi[sz]\\w+\\s+your|skyrocket\\w*|level\\s+up\\s+your|take\\s+(?:your\\s+)?[\\w\\s-]{0,30}\\bto\\s+the\\s+next\\s+level|effortlessly\\s+\\w+)\\b",
+   "fix": "name the concrete action instead of the verb that means nothing",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "whether-youre",
+   "family": 4,
+   "pattern": "\\bwhether\\s+you(?:['’]re|\\s+are)\\b[^.!?\\n]{0,60}\\bor\\b|\\bfor\\s+(?:teams|businesses|founders|developers|people|companies)\\s+of\\s+all\\s+sizes\\b|\\b(?:from|for)\\s+(?:startups|solo\\s+founders|freelancers|small\\s+teams)\\s+to\\s+(?:enterprises?|fortune|large|global)\\b|\\bno\\s+matter\\s+(?:your|the|what|where|how)\\b",
+   "fix": "name the one buyer this is for; a line for everybody is for nobody",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "fast-paced-world",
+   "family": 4,
+   "pattern": "\\bin\\s+today(?:['’]s)?\\s+(?:fast-?paced|digital|competitive|ever-?changing|rapidly|modern|hyper|busy|connected)\\b|\\bin\\s+(?:the|an?)\\s+(?:ever-?changing|rapidly\\s+(?:evolving|changing)|fast-?moving|dynamic|increasingly)\\s+(?:\\w+\\s+)?(?:world|landscape|market|environment|era|economy)\\b|\\bnow\\s+more\\s+than\\s+ever\\b|\\bin\\s+(?:this|the)\\s+(?:age|era)\\s+of\\b",
+   "fix": "delete the throat-clearing sentence",
+   "reply": true,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "say-goodbye",
+   "family": 4,
+   "pattern": "\\bsay\\s+(?:goodbye|farewell)\\s+to\\b|(?:^|[.!?]\\s+|\\n\\s*)no\\s+more\\s+\\w+|\\bgone\\s+are\\s+the\\s+days\\b|\\bnever\\s+(?:again\\s+)?(?:worry|miss|lose|forget)\\s+(?:about\\s+)?(?:a|an|another|your)\\b|\\bdon(?:['’]t)\\s+let\\s+\\w+[^.!?\\n]{0,40}\\b(?:slip|hold\\s+you\\s+back|stand\\s+in\\s+your\\s+way|get\\s+in\\s+the\\s+way)\\b|\\bstop\\s+(?:wasting|losing|struggling|worrying|guessing)\\b|\\btired\\s+of\\b|\\bsick\\s+of\\b|\\bstruggling\\s+(?:with|to)\\b|\\bfrustrated\\s+(?:by|with)\\b",
+   "fix": "state what the product does and what happened; not the pain it relieves",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "announcement",
+   "family": 4,
+   "pattern": "\\b(?:we(?:['’]re|\\s+are)|i(?:['’]m|\\s+am))\\s+(?:so\\s+|very\\s+|incredibly\\s+|beyond\\s+|really\\s+)?(?:excited|thrilled|proud|delighted|happy|pumped|stoked|honou?red)\\s+to\\s+(?:announce|share|introduce|launch|unveil|present|reveal|say)\\b|\\bexcited\\s+to\\s+(?:announce|share|introduce|launch)\\b|\\bthrilled\\s+to\\b|\\bproud\\s+to\\s+(?:announce|share|introduce|launch|present)\\b|(?:^|[.!?]\\s+|\\n\\s*)introducing\\s|\\bmeet\\s+(?:the\\s+new|your\\s+new)\\b|\\bsay\\s+hello\\s+to\\b|\\bbig\\s+news\\s*[:!.,]|\\b(?:we|i)\\s+(?:have|['’]ve\\s+got|got)\\s+big\\s+news\\b|\\bbig\\s+news\\s+(?:for|from|everyone|folks|today|this\\s+week)\\b|(?:^|[.!?]\\s+|\\n\\s*)announcing\\s|\\bnow\\s+live\\s*[:!]",
+   "fix": "delete the announcement; the first sentence names the product and what it does",
+   "reply": true,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "ultimate",
+   "family": 4,
+   "pattern": "\\bthe\\s+ultimate\\b|\\byour\\s+(?:one-?stop|go-?to|all-?in-?one|new\\s+favou?rite|secret\\s+weapon|new\\s+best\\s+friend|trusted\\s+partner|personal)\\s+(?:shop|hub|solution|tool|platform|assistant|companion|partner|destination|resource|source)\\b|\\bone-?stop(?:-shop)?\\b|\\bpeace\\s+of\\s+mind\\b|\\bat\\s+your\\s+fingertips\\b|\\blook\\s+no\\s+further\\b|\\bthe\\s+(?:easiest|smartest|fastest|simplest|best|most\\s+powerful)\\s+way\\s+to\\b|\\ba\\s+(?:smarter|better|faster|simpler|easier|new|modern)\\s+way\\s+to\\b|\\bmade\\s+(?:easy|simple|effortless)\\b|\\bin\\s+(?:seconds|minutes),\\s+not\\s+(?:hours|days|weeks)\\b|\\bwithout\\s+(?:the\\s+)?(?:hassle|headache|stress|guesswork|heavy\\s+lifting)\\b|\\bthe\\s+future\\s+of\\b|\\bstay\\s+(?:ahead|on\\s+top)\\s+of\\b|\\bget\\s+started\\s+today\\b|\\bjoin\\s+(?:thousands|hundreds|millions)\\b|\\btrusted\\s+by\\b|\\bloved\\s+by\\b|\\bwhat\\s+are\\s+you\\s+waiting\\s+for\\b|\\bunlike\\s+(?:other|traditional|legacy)\\b",
+   "fix": "delete it; a superlative with no measurement is noise",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "generic-outcome",
+   "family": 4,
+   "pattern": "\\bfocus\\s+on\\s+what\\s+(?:matters|you\\s+do\\s+best|really\\s+matters|matters\\s+most)\\b|\\bso\\s+you\\s+can\\s+focus\\s+on\\b|\\b(?:grow|scale)\\s+your\\s+business\\b|\\bsave\\s+(?:you\\s+)?time\\s+and\\s+money\\b|\\bwork\\s+smarter\\b|\\bdo\\s+more\\s+with\\s+less\\b|\\bmakes?\\s+(?:your\\s+)?life\\s+easier\\b|\\btakes?\\s+the\\s+(?:guesswork|pain|stress|hassle|headache)\\s+out\\s+of\\b|\\bwe(?:['’]ve|\\s+have)\\s+got\\s+you\\s+covered\\b|\\bwe\\s+handle\\s+the\\s+rest\\b|\\bthe\\s+rest\\s+is\\s+(?:handled|taken\\s+care\\s+of)\\b|\\bsit\\s+back\\s+and\\s+relax\\b|\\bin\\s+(?:just\\s+)?(?:a\\s+few|\\d+|two|three)\\s+(?:simple|easy|quick)\\s+(?:clicks|steps)\\b|\\bin\\s+just\\s+(?:a\\s+few|\\d+|two|three)\\s+(?:clicks|steps)\\b|\\bthat\\s+just\\s+works\\b",
+   "fix": "a sentence that fits any product describes none; say what this one does",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "rhetorical-hook",
+   "family": 4,
+   "pattern": "^\\s*(?:tired\\s+of|ever\\s+wonder(?:ed)?|what\\s+if|are\\s+you\\s+(?:still|tired|ready|looking|struggling|a)|do\\s+you\\s+(?:want|need|know|struggle|find|ever|have)|have\\s+you\\s+ever|struggling\\s+(?:with|to)|still\\s+\\w+ing|why\\s+(?:do|does|is|are|should)|want\\s+to|need\\s+to|looking\\s+for|ready\\s+to|wouldn(?:['’]t)\\s+it\\s+be|isn(?:['’]t)\\s+it\\s+time|what\\s+would\\s+you|how\\s+(?:much|many|often)\\s+(?:time|hours|money|do\\s+you))\\b[^\\n?]{0,140}\\?",
+   "fix": "open on the fact; a question hook delays it and belongs to nobody",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "nobody-asked-for-it",
+   "family": 5,
+   "pattern": "\\b(?:nobody|no\\s?one)\\s+(?:ever\\s+|had\\s+|has\\s+)?asked\\s+for\\b|\\bnever\\s+asked\\s+to\\s+be\\s+\\w+ed\\b|\\bunasked[-\\s]for\\b|\\bwho\\s+asked\\s+for\\s+(?:this|it|any\\s+of)\\b",
+   "fix": "say who it is for and what it does for them",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "just-a-thing-to-read",
+   "family": 5,
+   "pattern": "\\bjust\\s+(?:things?|something)\\s+to\\s+(?:read|look\\s+at|play\\s+with)\\b|\\bthat\\s+just\\s+gets?\\s+read\\b|\\bjust\\s+a\\s+(?:toy|hobby|weekend\\s+(?:hack|project)|side\\s+project|thing\\s+i\\s+made)\\b",
+   "fix": "name what it publishes and who reads it; drop \"just\"",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "paid-tier-gives-nothing",
+   "family": 5,
+   "pattern": "\\b(?:unlocks?|buys?\\s+you|gets?\\s+you|gives?\\s+you)\\s+(?:nothing|no\\s+(?:extra|additional|new|more))\\b|\\b(?:cap|ceiling|limit|setting|option|tier|plan)\\s+(?:of\\s+\\S+\\s+)?buys\\s+nothing\\b|\\bnobody\\s+gets\\s+what\\s+they\\s+asked\\s+for\\b",
+   "fix": "say what the money pays for, not what it withholds",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "our-work-is-binned",
+   "family": 5,
+   "pattern": "\\b(?:most|much|half|the\\s+bulk)\\s+of\\s+what\\s+(?:i|we)\\s+(?:build|make|ship|write|design)\\s+(?:gets?|is|ends\\s+up)\\s+(?:thrown|binned|scrapped|deleted|discarded|junked)\\b",
+   "fix": "say what shipped and what it does",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "nobody-would-click",
+   "family": 5,
+   "pattern": "\\b(?:nobody|no\\s?one)\\s+(?:clicks|is\\s+going\\s+to\\s+click|would\\s+click|bothers\\s+with)\\b",
+   "fix": "delete it; the post already carries the link",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "years-too-late",
+   "family": 5,
+   "pattern": "\\b(?:about\\s+)?(?:ten|twenty|thirty|forty|fifty|\\d{1,3})\\s+years\\s+(?:too\\s+)?late\\b",
+   "fix": "say what it does now, for whom",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "dressed-up-gamble",
+   "family": 5,
+   "pattern": "\\bcoin\\s+flip\\b|\\bwith\\s+nicer\\s+(?:artwork|graphics|packaging|typography)\\b",
+   "fix": "state the mechanism and the price without the joke",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "the-guessable-part",
+   "family": 5,
+   "pattern": "\\bthe\\s+(?:guessable|forgettable|unremarkable)\\s+part\\b",
+   "fix": "open on what it does instead",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "ours-is-a-clone",
+   "family": 5,
+   "pattern": "\\b(?:mine|ours|this|it)\\s+is\\s+a\\s+clone\\b",
+   "fix": "say what it does differently, in its own terms",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "cried-wolf",
+   "family": 5,
+   "pattern": "\\bcr(?:ied|ies|y)\\s+wolf\\b",
+   "fix": "say what the false result was and what fixed it",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "we-invented-a-finding",
+   "family": 5,
+   "pattern": "\\b(?:invent|invents|invented|made\\s+up)\\s+(?:a|the|its\\s+own)\\s+(?:finding|findings|result|violation|match|answer)\\b",
+   "fix": "name the bug and the fix without a headline that says the product fabricates",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "our-output-was-decoration",
+   "family": 5,
+   "pattern": "\\b(?:was|were|is|are)\\s+(?:just\\s+)?decoration\\b|\\bcorrectly\\s+and\\s+uselessly\\b|\\buselessly\\b",
+   "fix": "say what the output was wrong about, not that it was worthless",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  },
+  {
+   "slug": "free-does-the-same",
+   "family": 5,
+   "pattern": "\\bdoes\\s+the\\s+same\\s+(?:job|thing|work)\\s+for\\s+(?:nothing|free)\\b|\\byou\\s+(?:already|could)\\s+do\\s+this\\s+(?:for\\s+free|yourself)\\b",
+   "fix": "state the boundary as what it covers, not as a reason to skip it",
+   "reply": false,
+   "answer": false,
+   "copy": true
+  }
+ ],
+ "positives": {
+  "1": [
+   "To be straight with you, my deployment work is on Vercel rather than AWS.",
+   "To be transparent, the auth work was a small part of the role.",
+   "To be honest, I would pick Postgres for this.",
+   "Honestly, the second option is the one I would ship.",
+   "I should be upfront: the lane has not run since Tuesday.",
+   "In the interest of honesty, the screenshot was taken before the deploy.",
+   "Full disclosure, the count below is from yesterday's ledger.",
+   "I'll be candid, the parser is the slow part.",
+   "Frankly, the retry loop is doing nothing.",
+   "Truthfully, the numbers came from the cache.",
+   "I want to be clear that the file was rewritten in place.",
+   "Let me be clear: the gate ran first.",
+   "Real talk, the endpoint was never wired.",
+   "I'm not going to lie, the render took forty minutes.",
+   "If I'm being honest, the second lane was never armed.",
+   "Cards on the table: the budget was spent on Tuesday."
+  ],
+  "2": [
+   "Django is my gap and I'd pick it up on the job.",
+   "Kubernetes is not something I'd claim depth in.",
+   "Infrastructure is not my strongest area, but I own the deploy pipeline.",
+   "I'd want to learn Terraform properly before owning it.",
+   "I'm still growing there, but the fundamentals are in place.",
+   "Limited exposure to Kafka; my queue work has been on Postgres.",
+   "I'm less familiar with GraphQL than with REST.",
+   "I haven't had the chance to run an on-call rotation.",
+   "Observability is an area I'm developing.",
+   "I don't have direct experience with Kubernetes, but I have run production on Vercel.",
+   "While I haven't used Go specifically, I have shipped TypeScript services for five years.",
+   "I cannot speak to Terraform, but I own the deploy pipeline end to end.",
+   "N/A, though I have handled similar work on the frontend.",
+   "No experience with Kafka, but I have built queue-backed pipelines on Postgres.",
+   "No experience. I have built queue-backed pipelines on Postgres though.",
+   "I'm not certain, however my work at SS&C covered most of this.",
+   "This stack would be new to me, but the patterns carry over.",
+   "That is outside my wheelhouse, but the adjacent work was the reporting platform.",
+   "I have only limited exposure to Azure.",
+   "Unfortunately, I have not run a Kubernetes cluster in production.",
+   "Not applicable to my background, but I learn fast.",
+   "I don't know Terraform well.",
+   "I have not looked at communityhealthclinic.org. Nothing below is a finding about your website, and I am not going to invent one.",
+   "I lack direct experience with Kafka.",
+   "Kafka is not something I have used.",
+   "I don't have a good example for that.",
+   "I can't give you an honest comparison with Shoogle.",
+   "One caveat: I have only limited exposure to Azure.",
+   "To be clear, I have not shipped a mobile app."
+  ],
+  "3": [
+   "I should note that the migration ran twice.",
+   "It's worth mentioning that the cache was cold.",
+   "I'd say the second option is the stronger one.",
+   "I think it's fair to say the lane was never armed.",
+   "What I can tell you is that the ledger has three rows.",
+   "The short version is that the hook never fired.",
+   "Put simply, the render gate is off the deploy path.",
+   "In other words, the file was rewritten in place.",
+   "That said, the count is from yesterday.",
+   "With that in mind, the retry stays at three.",
+   "At the end of the day, the price on the page is the price charged.",
+   "Long story short, the plist was never loaded.",
+   "The bottom line is the endpoint returns 404.",
+   "My take is that the second lane should stay off.",
+   "For what it's worth, the parser is the slow part.",
+   "It's fair to say the gate never ran."
+  ],
+  "4": [
+   "A powerful, robust checker built to help teams file on time.",
+   "Seamlessly connect your vendor contracts and effortlessly track every renewal.",
+   "A cutting-edge, next-generation tool for compliance.",
+   "Streamline your filings and elevate your reporting.",
+   "Unlock insights and empower your team to move faster.",
+   "Supercharge your outreach and take your pipeline to the next level.",
+   "In today's fast-paced world, every renewal counts.",
+   "Say goodbye to missed deadlines.",
+   "Your one-stop shop for hassle-free compliance and peace of mind.",
+   "Every deadline at your fingertips. Look no further.",
+   "The game-changing way to manage vendor notices.",
+   "Thrilled to share what we've been building.",
+   "Grow your business with a tool that just works.",
+   "Big news: the register now ships with every product."
+  ],
+  "5": [
+   "And some are just things to read.",
+   "It started as a weekend project and I never took it further, but here it is: just a weekend project.",
+   "Membership is $5 a month or $39 a year and unlocks nothing, because nothing is held back.",
+   "Membership is $5 a month or $39 a year, and it buys you no extra pages.",
+   "The cost is that nobody gets what they asked for.",
+   "Most of what I build gets thrown out before anyone sees it.",
+   "Unwinnability treated as a reachability problem, about thirty years late.",
+   "It's a five dollar coin flip with nicer artwork.",
+   "Mine is a clone in shape only.",
+   "I built a Playwright gate that cried wolf 889 times.",
+   "The working printed under them was decoration.",
+   "Our morning check flagged it as overdue, correctly and uselessly, every single day.",
+   "I spent years polishing things nobody had asked for yet.",
+   "Four scoreboards grading software that never asked to be graded.",
+   "If you keep the date in a calendar, a reminder you set yourself does the same job for nothing."
+  ]
+ },
+ "negatives": {
+  "1": [
+   "The transparent PNG is 764 by 470.",
+   "A fair test runs both lanes on the same seat.",
+   "The straight run took four minutes; the retried one took nine.",
+   "The blunt instrument here is a regex, and it catches the shape.",
+   "The gate is honest about what it measured: 82 of 4,893 messages.",
+   "A candid interview clip is what the recipe asks for.",
+   "The deploy went out at 00:30 and the apex shows the new tile.",
+   "I read the file back after the write.",
+   "The disclosure form has three fields and none of them is prefilled.",
+   "The direct link goes to the checkout page.",
+   "It is a clear win on the second measurement.",
+   "Truth tables for the three flags are in the test file.",
+   "Frank Ocean is the artist named in the caption.",
+   "The lie detector in the gate is a byte comparison."
+  ],
+  "2": [
+   "No.",
+   "No experience.",
+   "None.",
+   "0",
+   "No experience with Kubernetes.",
+   "5 years.",
+   "N/A",
+   "Not applicable.",
+   "Yes.",
+   "Production deployment and infrastructure ownership on Vercel, with Postgres and Supabase behind it.",
+   "I built the reconciliation service that talks to the JP Morgan and Morgan Stanley APIs.",
+   "The team was not sure of the cause, so I wrote a probe that reads the socket state directly.",
+   "The API does not have a batch endpoint, so I built one that pages through the ledger.",
+   "I own the deploy pipeline end to end: a nightly sweep, a render gate, and a rollback path.",
+   "Available to start immediately; no notice period.",
+   "New York, NY. Open to remote, hybrid and on-site.",
+   "Expected salary: $220K-$280K base.",
+   "I was the sole web engineer for SS&C's Private Markets division for four years.",
+   "AI-assisted prototyping is how I work, not something I'd be learning.",
+   "The gap between the two measurements is 11 pixels."
+  ],
+  "3": [
+   "The migration ran twice.",
+   "The cache was cold on the first request.",
+   "The second option is the stronger one.",
+   "The lane was never armed.",
+   "The ledger has three rows.",
+   "The hook never fired.",
+   "The render gate is off the deploy path.",
+   "The file was rewritten in place.",
+   "The count is from yesterday.",
+   "The retry stays at three.",
+   "The price on the page is the price charged.",
+   "The plist was never loaded.",
+   "The endpoint returns 404.",
+   "Other words in the list are hyphenated.",
+   "The short film runs 55 seconds and the square cut runs 40.",
+   "The note in the ledger says the row was purged."
+  ],
+  "4": [
+   "New York City posts $500 a quarter against a late LL84 filing, to a $2,000 annual cap, until the report lands.",
+   "The checker reads the ledger back and refuses to submit when the price on the page differs from the price charged.",
+   "It crawls the registry instead of scraping the docs page, so a renamed component still resolves.",
+   "We counted 41 lanes and deleted the directory six of them pointed at.",
+   "The scan takes eleven seconds on a 40-page site.",
+   "On August 19 the prices came down.",
+   "The report is a PDF with the filing number on page one.",
+   "The power supply for the kit is 12 volts.",
+   "A robot vacuum is the subject of the third caption.",
+   "The comprehension test asks four questions about the passage.",
+   "Storms and filings and the big news outlets, on the same wire."
+  ],
+  "5": [
+   "Membership is $5 a month or $39 a year. It pays for the wire and keeps ads off it.",
+   "The city writes a fresh $500 notice every quarter the report is still missing.",
+   "A subagent whose name has a colon in it never registers.",
+   "You get the scored lines and drafted protests back inside 48 hours.",
+   "The walk settles for 750ms at each stop, which is long enough for a reveal to finish.",
+   "The check learns each job's own normal gap, so a job that stops reads as late within two hours.",
+   "It is just the archive and the daily email, and both are free.",
+   "The comparison on its own is close to useless without the size and age of the contract.",
+   "The reader never asked to leave, so the list gets smaller and nothing errors.",
+   "Four of the five frameworks publish nothing about their own maintenance status."
+  ]
+ }
+}
